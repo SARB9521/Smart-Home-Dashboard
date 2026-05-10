@@ -1,0 +1,74 @@
+﻿@model SmartHomeMVC.Models.SmartHomeModel
+@{
+    ViewData["Title"] = "Smart Home Dashboard";
+}
+
+<h2 class="text-center text-white my-4">@ViewData["Title"]</h2>
+
+<div class="container-fluid px-3">
+    <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+
+        <!-- Light Control -->
+        <div class="col">
+            <div class="glass-card">
+                <h5>Light Control</h5>
+                <img src="~/images/bulb.png" width="50" />
+                <form method="post" asp-action="ToggleLight" class="mt-2">
+                    <button class="btn @(Model.IsLightOn ? "btn-danger" : "btn-primary") w-100">
+                        @(Model.IsLightOn ? "Turn Off Light" : "Turn On Light")
+                    </button>
+                </form>
+                <p class="mt-2">Status: <strong>@(Model.IsLightOn ? "ON" : "OFF")</strong></p>
+            </div>
+        </div>
+
+        <!-- Fan Control -->
+        <div class="col">
+            <div class="glass-card">
+                <h5>Fan Control</h5>
+                <img src="~/images/fan.png" width="50" />
+                <form method="post" asp-action="ToggleFan" class="mt-2">
+                    <button class="btn @(Model.IsFanOn ? "btn-danger" : "btn-success") w-100">
+                        @(Model.IsFanOn ? "Turn Off Fan" : "Turn On Fan")
+                    </button>
+                </form>
+                <p class="mt-2">Status: <strong>@(Model.IsFanOn ? "ON" : "OFF")</strong></p>
+            </div>
+        </div>
+
+        <!-- Environment -->
+        <div class="col">
+            <div class="glass-card">
+                <h5>Environment</h5>
+                <img src="~/images/thermometer.png" width="45" />
+                <form method="post" asp-action="Refresh" class="mt-2">
+                    <button class="btn btn-info w-100">Refresh Sensors</button>
+                </form>
+                <p class="mt-3">Temperature: <strong>@Model.Temperature °C</strong></p>
+            </div>
+        </div>
+
+        <!-- Room Status -->
+        <!-- Room Status -->
+        <div class="col">
+            <div class="glass-card">
+                <h5>🚪 Room Status</h5>
+                <img src="~/images/room.png" width="50" alt="Room Icon" />
+                <form method="post" asp-action="SetRoomStatus" class="mt-2">
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+                        @{
+                            var statuses = new List<string> { "Occupied", "Empty", "Sleeping" };
+                            foreach (var s in statuses)
+                            {
+                                <option value="@s" selected="@(Model.RoomStatus == s ? "selected" : null)">@s</option>
+                            }
+                        }
+                    </select>
+                </form>
+                <p class="mt-3">Current Status: <strong>@Model.RoomStatus</strong></p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
